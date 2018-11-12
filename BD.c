@@ -1,12 +1,14 @@
 #include "BD.h"
 void create_table(tables *tabelas){
+    char dat [20]=".data";
+    char csv[20]=".txt";
+    char local[200]="dbs/"; 
     char name[256];
     char key [256];
     char* type =(char*) malloc(256*sizeof(char));
     char columns[256];
     char fim[30]= "0";
-    char txt[20]=".txt";
-    char point[30];
+    char dados [40];
     printf("nome da tabela\n");
     fscanf(stdin,"%[^\n]",name);
     getchar();
@@ -14,15 +16,25 @@ void create_table(tables *tabelas){
         printf("Tabela ja existe\n");
         return;
     }
-    strcpy(point,name);
-    strcat(point,txt);
-    FILE *table = fopen(point,"w+");
-    fprintf(table,"name : %s\n",name);
-    fprintf(table,"#Format#\n");
+    mkdir(strcat(local,name), 0777);
+    strcat(local,"/");
+    strcat(local,name);
+    strcpy(dados,local);
+    strcat(local,csv);
+    strcat(dados,dat);
+    printf("%s\n%s\n",local,dados);
+    FILE *table = fopen(local,"w+");
+    if (table==NULL){
+        printf("falha na abertura");
+    }
+    FILE *data = fopen(dados,"w+");
+    if (data==NULL){
+        printf("falha na abertura");
+    }
     printf("digte o nome da chave primaria\n");
     fscanf(stdin,"%[^\n]",key);
     getchar();
-    fprintf(table,"int %s\n",key);
+    fprintf(table,"int ;%s\n",key);
     do{
         printf("Digite o tipo da coluna que deseja ou 0 \n");
         scanf("%s",type);
@@ -30,13 +42,13 @@ void create_table(tables *tabelas){
         if (strcmp(type,fim)==0) break;
         printf("digite o nome da coluna\n");
         scanf("%s",columns);
-        fprintf(table,"%s %s\n",type,columns);
+        fprintf(table,"%s ;%s\n",type,columns);
     }while (strcmp(type,fim)!= 0);
-    fprintf(table,"#Date#");
     FILE *index=fopen("index.txt","a+");
     fprintf(index,"Nome : %s\nChave : %s\n",name,key);
     fclose(index);
-    fclose(table);     
+    fclose(table);
+    fclose(data);     
 }
 char * type_def(char*type){
     char inteiro[30]= "int";

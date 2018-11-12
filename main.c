@@ -1,6 +1,7 @@
 #include "BD.h"
 int main()
 {   
+    mkdir("dbs", 0777);
     tables tabelas[200];
     tables *index =& tabelas[0];  
     veri_index(index);
