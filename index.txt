@@ -1,0 +1,6 @@
+Nome : alunos
+Chave : id
+Nome : jogadores
+Chave : numero
+Nome : aulas
+Chave : materia

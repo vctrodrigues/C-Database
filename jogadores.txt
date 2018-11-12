@@ -1,0 +1,6 @@
+name : jogadores
+#Format#
+int numero
+char[256] nomes
+char[256] time
+#Date#
