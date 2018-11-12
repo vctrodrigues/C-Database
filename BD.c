@@ -1,5 +1,5 @@
 #include "BD.h"
-void creat_table(tables *tabelas){
+void create_table(tables *tabelas){
     char name[256];
     char key [256];
     char* type =(char*) malloc(256*sizeof(char));

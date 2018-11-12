@@ -8,7 +8,7 @@ typedef struct{
     char name[256];
     char key[256];
 }tables;
-void creat_table(tables *tabelas);
+void create_table(tables *tabelas);
 char * type_def(char*type);
 void veri_index(tables *point);
 int veri_table ( tables *index,char nome[]);
