@@ -10,7 +10,7 @@ void create_table(tables *tabelas){
     char fim[30]= "0";
     char dados [40];
     printf("nome da tabela\n");
-    fscanf(stdin,"%[^\n]",name);
+    fscanf(stdin, "%[^\n]", name);
     getchar();
     if(veri_table ( tabelas,name)){
         printf("Tabela ja existe\n");

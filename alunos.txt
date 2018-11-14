@@ -1,6 +1,0 @@
-name:alunos
-#Format#
-int id
-char[256] nome
-int matricula
-#Date#
