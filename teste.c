@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <ctype.h>
 typedef struct{
+    char string[256];
+}string;
+typedef struct{
     char name[256];
     char key[256];
 }tables;
@@ -24,4 +27,56 @@ int main (void){
     i++;
     }while(!feof(index));    
     fclose(index);
+    FILE * format;
+    FILE * data;
+    int aux =0;
+    int aux1=0;
+    string colunas[10];
+    string *coll=&colunas[0];
+    string base [20][20];
+    string *datas= &base[0][0];
+    char desp[50];
+    char name [256];
+    char dados [40];
+    char dat [20]=".data";
+    char csv[20]=".txt";
+    char local[200]="dbs/";
+    printf("Digite nome da tabela\n");
+    scanf("%s",name);
+    // veri_index(index);
+    // if (veri_table(index,name)) return;
+    strcat(local,name);
+    strcat(local,"/");
+    strcat(local,name);
+    strcpy(dados,local);
+    strcat(local,csv);
+    strcat(dados,dat);
+    format = fopen(local,"r+");
+    data = fopen(dados,"r+");
+    while(!feof(format)){
+        if (colunas==NULL) break;
+        fscanf(format,"%s ;%s",desp,(coll+aux)->string);
+        fgetc(format);
+        if (colunas==NULL) break;
+        aux++;    
+    }
+    for(int i =0;i<aux-1;i++){
+        printf("%s |",colunas[i].string);
+    }
+    printf("\n");
+    printf("valor de aux %d\n", aux);
+    do{
+        for(int i = 0;i<aux-1;i++){
+            fscanf(data,"%s ;",base[aux1][i].string);
+        }
+        aux1++;
+    }while(!feof(data));
+    for(int i =0;i< aux1-1;i++){
+        for(int j =0;j<aux-1;j++){
+          printf("%s |",base[i][j].string);  
+        }
+        printf("\n");
+    }
+    fclose(data);
+    fclose(format);
 }

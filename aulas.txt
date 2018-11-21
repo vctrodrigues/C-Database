@@ -1,5 +1,0 @@
-name : aulas
-#Format#
-int materia
-char[256] nomes
-#Date#

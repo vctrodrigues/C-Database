@@ -5,10 +5,10 @@ int main()
     tables tabelas[200];
     tables *index =& tabelas[0];  
     veri_index(index);
-    int i=0;
     char select[256];
     char create[256]= "create_table";
     char list[256]= "list_table";
+    char listData[256]="list_data";
     while(1){
         scanf("%s",select);
         getchar();
@@ -16,13 +16,10 @@ int main()
             create_table(index);
         }
         else if (strcmp(select,list)==0){
-            veri_index(index);
-            
-            while(strcmp(((index+i)->name),"")!= 0 ){
-                printf("Tabela:%s\n",(index+i)->name);
-            i++;
-            }
-            i=0;
+            list_table(index);
+        }
+        else if (strcmp(select,listData)==0){
+            list_data(index);
         }
         else{
             break;

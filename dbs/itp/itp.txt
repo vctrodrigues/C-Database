@@ -1,0 +1,2 @@
+int ;matricula
+char[256] ;nomes
