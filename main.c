@@ -8,6 +8,7 @@ int main()
     char select[256];
     char create[256]= "create_table";
     char list[256]= "list_table";
+    char insert[256]= "insert_data";
     char listData[256]="list_data";
     while(1){
         scanf("%s",select);
@@ -17,6 +18,9 @@ int main()
         }
         else if (strcmp(select,list)==0){
             list_table(index);
+        }
+        else if (strcmp(select,insert)==0){
+            insert_data(index);
         }
         else if (strcmp(select,listData)==0){
             list_data(index);
