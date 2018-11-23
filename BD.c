@@ -150,7 +150,10 @@ void insert_data(tables *index) {
 
             printf("Valor de |%s| (%s): ", column, type);
             fscanf(stdin, "%[^\n]", value);
-
+            if(veri_key(info,local,value)){
+                printf("primary key already exists\n");
+                return;
+            }
             strcat(row, value);
             strcat(row, " ;");
         } while(!feof(columns));
@@ -248,4 +251,36 @@ void list_data(tables * index){
     fclose(format);
     
     return;
+}
+int veri_key(char local_dados[],char local_format[],char chave[]){
+    FILE *dados= fopen(local_dados,"r+");
+    FILE *formato= fopen(local_format,"r+");
+    if (formato == NULL)
+    {
+        printf("arquivo não foi aberto\n");
+    }
+    char lixo[256];
+    int aux = 0;
+    while (!feof(formato))
+    {
+        fgets(lixo, 256, formato);
+        if (lixo == NULL)
+            break;
+        aux++;
+    }
+    // printf("valor de aux %d\n", aux);
+    while (!feof(dados))
+    {
+        for (int i = 0; i < aux - 1; i++)
+        {
+            fscanf(dados, "%s ;", lixo);
+            if ((i == 0) && (strcmp(lixo, chave) == 0))
+            {
+                return 1;
+            }
+        }
+    }
+    fclose(formato);
+    fclose(dados);
+    return 0;
 }
