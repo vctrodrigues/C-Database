@@ -1,5 +1,6 @@
 #include "BD.h"
 #include "view.h"
+
 int main()
 {   
     mkdir("dbs", 0777);
