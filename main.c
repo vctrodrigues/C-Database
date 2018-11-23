@@ -1,4 +1,5 @@
 #include "BD.h"
+#include "view.h"
 int main()
 {   
     mkdir("dbs", 0777);
@@ -10,9 +11,11 @@ int main()
     char list[256]= "list_table";
     char insert[256]= "insert_data";
     char listData[256]="list_data";
+    print_menu();
     while(1){
         scanf("%s",select);
         getchar();
+        print_separator();
         if (strcmp(select,create)==0){
             create_table(index);
         }

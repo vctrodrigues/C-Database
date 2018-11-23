@@ -139,6 +139,7 @@ void insert_data(tables *index) {
 
         char row[2000] = "";
 
+        int isPK = 1;
         do {
             char value[256];
 
@@ -150,10 +151,15 @@ void insert_data(tables *index) {
 
             printf("Valor de |%s| (%s): ", column, type);
             fscanf(stdin, "%[^\n]", value);
-            if(veri_key(info,local,value)){
-                printf("primary key already exists\n");
-                return;
+            
+            if(isPK == 1) {
+                if(veri_key(info,local,value)){
+                    printf("Chave primária já existe!\n");
+                    return;
+                }
+                isPK = 0;
             }
+            
             strcat(row, value);
             strcat(row, " ;");
         } while(!feof(columns));
