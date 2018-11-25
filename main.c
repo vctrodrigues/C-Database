@@ -12,11 +12,13 @@ int main()
     char list[256]= "list_table";
     char insert[256]= "insert_data";
     char listData[256]="list_data";
+    char removeData[256]="remove_data";
     print_menu();
     while(1){
         scanf("%s",select);
         getchar();
         print_separator();
+        veri_index(index);
         if (strcmp(select,create)==0){
             create_table(index);
         }
@@ -28,6 +30,9 @@ int main()
         }
         else if (strcmp(select,listData)==0){
             list_data(index);
+        }
+        else if (strcmp(select,removeData)==0){
+            remove_data(index);
         }
         else{
             break;

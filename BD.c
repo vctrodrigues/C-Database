@@ -204,15 +204,12 @@ void list_data(tables * index){
     char dat [20]=".data";
     char csv[20]=".txt";
     char local[200]="dbs/";
-    
     printf("Digite nome da tabela\n");
     scanf("%s",name);
-    
     if (veri_table(index,name)!= 1) {
         printf("Tabela Não existe\n");
         return;
     }
-    
     strcat(local,name);
     strcat(local,"/");
     strcat(local,name);
@@ -289,4 +286,139 @@ int veri_key(char local_dados[],char local_format[],char chave[]){
     fclose(formato);
     fclose(dados);
     return 0;
+}
+void remove_data(tables * index){
+    FILE *format;
+    FILE *data;
+    FILE *newData;
+    char desp[50];
+    char name [256];
+    char dados [40];
+    char dat [20]=".data";
+    char csv[20]=".txt";
+    char local[200]="dbs/";
+    char new_data[256];
+    char lixo[256];
+    char chave [256];
+    int aux = 0;
+    int aux2=0;
+    printf("Digite nome da tabela\n");
+    scanf("%s",name);
+    if (veri_table(index,name)!= 1) {
+        printf("Tabela Não existe\n");
+        return;
+    }
+    printf("Digite a chave primaria\n");
+    scanf("%s",chave);
+    strcat(local,name);
+    strcat(local,"/");
+    strcat(local,name);
+    strcpy(dados,local);
+    strcpy(new_data,local);
+    strcat(local,csv);
+    strcat(dados,dat);
+    strcat(new_data,".alterado");
+    format = fopen(local,"r+");
+    data = fopen(dados,"r+");
+    newData=fopen(new_data,"w");
+    while (!feof(format))
+    {
+        fgets(lixo, 256, format);
+        if (lixo == NULL)
+            break;
+        aux++;
+    }
+    while (!feof(data))
+    {
+        fgets(lixo, 256, data);
+        if (lixo == NULL)
+            break;
+        aux2++;
+    }
+    printf("valor de aux %d\n", aux);
+    printf("valor de aux2 %d\n", aux2);
+    fseek(data,0,SEEK_SET);
+    for (int k =0;k<aux2-1;k++)
+    {
+        for (int i = 0; i < aux - 1; i++)
+        {
+            fscanf(data, "%s ;", lixo);
+            if ((i == 0) && (strcmp(lixo, chave) == 0))
+            {
+                printf("data deletados:\n");
+                // fgets(lixo, 256, data);
+                for(int j =0;j<aux-2;j++){
+                fscanf(data, "%s ;", lixo);
+                printf("%s||",lixo); 
+                }
+                break;
+            }
+            else if (i==aux-2){
+                fprintf(newData,"%s ;\n",lixo);
+            }
+            else{
+                fprintf(newData,"%s ;",lixo);
+            }
+        }
+    }
+    remove(dados);
+    rename(new_data,dados);
+    fclose(format);
+    fclose(data);
+    fclose(newData);
+    return ;
+}
+void delete_table(tables *index){
+    FILE *tabelas;
+    FILE *newTable;
+    int aux;
+    char accumulator[256];
+    char accumulator2[256];
+    char name[256];
+    printf("Digite nome da tabela\n");
+    scanf("%s",name);
+    if (veri_table(index,name)!= 1) {
+        printf("Tabela Não existe\n");
+        return;
+    }
+    tabelas = fopen("index.txt","r+");
+    newTable = fopen("index.alterado","w");
+    while (!feof(tabelas))
+    {   
+        fgets(accumulator,256,tabelas);
+        aux++;
+    }
+    fseek(tabelas,0,SEEK_SET);
+    for (int i =0;i<aux-1;i++){
+        fscanf(tabelas,"%s : %s",accumulator,accumulator2);
+        if((strcmp(accumulator,"Nome")==0)&&(strcmp(accumulator2,name)==0))
+        {
+            fscanf(tabelas,"%s : %s",accumulator,accumulator2);
+            i++;
+        }
+        else{
+            fprintf(newTable,"%s : %s\n",accumulator,accumulator2);
+        }
+    }
+    remove("index.txt");
+    rename("index.alterado","index.txt");
+    fclose(tabelas);
+    fclose(newTable);
+    delete_pasta(name);
+}
+void delete_pasta(char name[]){
+    char local[200]="dbs/";
+    char dados[200];
+    char formato[200];
+    strcat(local,name);
+    strcpy(dados,local);
+    strcat(dados,"/");
+    strcat(dados,name);
+    strcpy(formato,dados);
+    strcat(dados,".data");
+    strcat(formato,".txt");
+    printf("%s\n%s\n%s\n",local,dados,formato);
+    remove(dados);
+    remove(formato);
+    remove(local);
 }

@@ -20,4 +20,5 @@ void list_table(tables* index);
 void insert_data(tables * index);
 void list_data(tables * index);
 int veri_key(char local_dados[],char local_format[],char chave[]);
+void remove_data(tables * index);
 #endif
