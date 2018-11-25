@@ -50,6 +50,9 @@ void print_menu() {
     printf("\n> insert_data");
     printf(ANSI_COLOR_MAGENTA);
     printf("\n> list_data");
+    printf(ANSI_COLOR_RED);
+    printf("\n> remove_data");
+    printf("\n> delete_table");
     printf(ANSI_COLOR_RESET);
     printf("\n===============================");
     printf("\nDigite seu comando> ");

@@ -13,6 +13,7 @@ int main()
     char insert[256]= "insert_data";
     char listData[256]="list_data";
     char removeData[256]="remove_data";
+    char deleteTable[256]="delete_table";
     print_menu();
     while(1){
         scanf("%s",select);
@@ -34,10 +35,13 @@ int main()
         else if (strcmp(select,removeData)==0){
             remove_data(index);
         }
+        else if (strcmp(select,deleteTable)==0){
+            delete_table(index);
+        }
         else{
             break;
         }
-        
+        print_separator();
     }
     return 0;
 }
