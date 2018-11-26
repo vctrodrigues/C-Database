@@ -25,4 +25,6 @@ void remove_data(tables * index);
 void delete_table(tables *index);
 void search_data(tables *index);
 void change_data(tables *index);
+int isIntValue(char value[]);
+int isFloatValue(char value[]);
 #endif

@@ -9,11 +9,11 @@ void create_table(tables *tabelas){
     char columns[256];
     char fim[30]= "0";
     char dados [40];
-    printf("nome da tabela\n");
+    printf("Nome da tabela> ");
     fscanf(stdin,"%[^\n]",name);
     getchar();
     if(veri_table(tabelas,name)){
-        printf("Tabela ja existe\n");
+        print_err("Tabela já existe\n");
         return;
     }
     mkdir(strcat(local,name), 0777);
@@ -25,11 +25,11 @@ void create_table(tables *tabelas){
     // printf("%s\n%s\n",local,dados);
     FILE *table = fopen(local,"w+");
     if (table==NULL){
-        printf("falha na abertura");
+        print_err("Falha na abertura");
     }
     FILE *data = fopen(dados,"w+");
     if (data==NULL){
-        printf("falha na abertura");
+        print_err("Falha na abertura do arquivo");
     }
     printf("Digte o nome da chave primária> ");
     fscanf(stdin,"%[^\n]",key);
@@ -40,7 +40,7 @@ void create_table(tables *tabelas){
         scanf("%s",type);
         strcpy(type ,type_def(type));
         if (strcmp(type,fim)==0) break;
-        printf("digite o nome da coluna\n");
+        printf("Digite o nome da coluna> ");
         scanf("%s",columns);
         fprintf(table,"%s ;%s\n",type,columns);
     }while (strcmp(type,fim)!= 0);
@@ -61,7 +61,7 @@ char * type_def(char*type){
     else if (strcmp(type,chr)== 0) return "char";
     else if (strcmp(type,flt)== 0) return "float";
     else{
-        printf("type não def\nfinalizar criação\n");
+        print_notification("Tabela criada com sucesso");
         return "0";
     }
 }
@@ -112,13 +112,13 @@ tables* get_table(tables *index,char nome[256]) {
 
 void insert_data(tables *index) {
     char nome[256];
-    printf("Nome da tabela: ");
+    printf("Digite o nome da tabela> ");
     scanf("%s", nome);
 
     tables *table = get_table(index, nome);
 
     if(table == NULL) {
-        printf("Tabela não encontrada!\n");
+        print_err("Tabela não encontrada");
     } else {
         char local[200]="dbs/"; 
         char info[200];
@@ -149,12 +149,28 @@ void insert_data(tables *index) {
             getchar();
             fscanf(columns, "%s ;%s\n", type, column);
 
-            printf("Valor de |%s| (%s): ", column, type);
+            printf("Valor de | %s | (%s): ", column, type);
             fscanf(stdin, "%[^\n]", value);
+
+            if(strcmp(type, "int") == 0) {
+                int isInt = isIntValue(value);
+                if(!isInt) {
+                    printf(ANSI_COLOR_RED "err> Valor `%s` não corresponde ao tipo (%s)\n", value, type);
+                    printf(ANSI_COLOR_RESET);
+                    return;
+                }
+            } else if(strcmp(type, "float") == 0) {
+                int isFloat = isFloatValue(value);
+                if(!isFloat) {
+                    printf(ANSI_COLOR_RED "err> Valor `%s` não corresponde ao tipo (%s)\n", value, type);
+                    printf(ANSI_COLOR_RESET);
+                    return;
+                }
+            }
             
             if(isPK == 1) {
                 if(veri_key(info,local,value)){
-                    printf("Chave primária já existe!\n");
+                    print_err("Chave primária já existe");
                     return;
                 }
                 isPK = 0;
@@ -170,7 +186,7 @@ void insert_data(tables *index) {
         fclose(data);
         fclose(columns);
 
-        printf("Dados inseridos na tabela!\n");
+        print_notification("Dados inseridos na tabela");
     }
 }
 
@@ -230,9 +246,11 @@ void list_data(tables * index){
         aux++;    
     }
     
+    printf(ANSI_COLOR_CYAN);
     for(int i =0;i<aux-1;i++){
-        printf("%s |",colunas[i].string);
+        printf("%20s\t| ",colunas[i].string);
     }
+    printf(ANSI_COLOR_RESET);
     
     printf("\n");
     
@@ -245,7 +263,7 @@ void list_data(tables * index){
     
     for(int i =0;i< aux1-1;i++){
         for(int j =0;j<aux-1;j++){
-          printf("%s |",base[i][j].string);  
+          printf("%20s\t| ",base[i][j].string);  
         }
         printf("\n");
     }
@@ -260,7 +278,7 @@ int veri_key(char local_dados[],char local_format[],char chave[]){
     FILE *formato= fopen(local_format,"r+");
     if (formato == NULL)
     {
-        printf("arquivo não foi aberto\n");
+        print_err("Arquivo não foi aberto");
     }
     char lixo[256];
     int aux = 0;
@@ -302,13 +320,13 @@ void remove_data(tables * index){
     char chave [256];
     int aux = 0;
     int aux2=0;
-    printf("Digite nome da tabela\n");
+    printf("Digite nome da tabela> ");
     scanf("%s",name);
     if (veri_table(index,name)!= 1) {
-        printf("Tabela Não existe\n");
+        print_err("Tabela não existe\n");
         return;
     }
-    printf("Digite a chave primaria\n");
+    printf("Digite a chave primária> ");
     scanf("%s",chave);
     strcat(local,name);
     strcat(local,"/");
@@ -364,6 +382,8 @@ void remove_data(tables * index){
     fclose(format);
     fclose(data);
     fclose(newData);
+
+    print_notification("Linha deletada com sucesso");
     return ;
 }
 void delete_table(tables *index){
@@ -376,10 +396,10 @@ void delete_table(tables *index){
     char local[200]="dbs/";
     char dados[200];
     char formato[200];
-    printf("Digite nome da tabela\n");
+    printf("Digite nome da tabela> ");
     scanf("%s",name);
     if (veri_table(index,name)!= 1) {
-        printf("Tabela Não existe\n");
+        print_err("Tabela não existe");
         return;
     }
     tabelas = fopen("index.txt","r+");
@@ -416,6 +436,8 @@ void delete_table(tables *index){
     remove(dados);
     remove(formato);
     remove(local);
+
+    print_notification("Tabela removida com sucesso");
     return;
 }
 
@@ -446,7 +468,7 @@ void search_data(tables *index) {
     scanf("%s", selectedColumn);
 
     if(veri_table(index,name)!= 1) {
-        printf("Tabela não existe\n");
+        print_err("Tabela não existe");
         return;
     }
 
@@ -474,7 +496,7 @@ void search_data(tables *index) {
     int count2 = 0;
     int columnIndex = 0;
 
-    char selectedType[256];
+    char selectedType[256] = "";
 
     for(int i = 0; i < count-1; i++){
         if(strcmp(columns[i].string, selectedColumn) == 0) {
@@ -483,6 +505,11 @@ void search_data(tables *index) {
         }
         columnIndex++;
     }   
+
+    if(selectedType == "") {
+        print_err("Nenhuma coluna selecionada");
+        return;
+    }
 
     int intSearchTerm;
     char charSearchTerm[256];
@@ -605,6 +632,7 @@ void search_data(tables *index) {
     
 
 }
+
 void change_data(tables *index){
     FILE *format;
     FILE *data;
@@ -621,10 +649,10 @@ void change_data(tables *index){
     char dados[200];
     char formato[200];
     char dados2[200];
-    printf("Digite nome da tabela\n");
+    printf("Digite o nome da tabela> ");
     scanf("%s",name);
     if (veri_table(index,name)!= 1) {
-        printf("Tabela Não existe\n");
+        print_err("Tabela não existe");
         return;
     }
     strcat(local,name);
@@ -646,36 +674,42 @@ void change_data(tables *index){
         aux++;
     }
     fseek(format,0,SEEK_SET);
-    printf("Digite o numero da coluna que deseja alterar\n");
+    
+    print_separator();
     for (int i =0;i<aux-1;i++){
         fscanf(format,"%s ;%s",accumulator,accumulator2);
-        printf("%d-%s||",i,accumulator2);
+        printf("%d - %s\t| ",i,accumulator2);
     }
-    do{
-    printf("\n Select>");
-    scanf("%d",&select);
-    if(select>aux-2) printf("coluna não existe");
-    }while(select>aux-2);
-    printf("Digite o novo valor\n");
+    print_separator();
+    
+    do {
+        printf("Digite o número da coluna que deseja alterar> ");
+        scanf("%d",&select);
+        if(select>aux-2) print_err("Coluna não existe");
+    } while(select>aux-2);
+
+    printf("Digite o novo valor> ");
     scanf("%s",valor);
     if ((select==0)&&(veri_key(dados,formato,valor))){
-        printf("Chave ja existe");
+        print_err("A chave primária já existe");
         remove(dados2);
         return;
     }
-    printf("digite o valor da chave primaria da linha\n");
+    printf("Digite o valor da chave primária da linha> ");
     scanf("%s",chave);
+
     while (!feof(data))
     {   
         fgets(accumulator,256,data);
         aux2++;
     }
+    
     fseek(data,0,SEEK_SET);
     for (int i =0;i<aux2-1;i++){
         for (int j=0;j<aux-1;j++){
             fscanf(data,"%s ;",accumulator);
             if ((j==0)&&(strcmp(accumulator,chave)==0)){
-             for( j=0;j<aux-1;j++){
+             for(j=0;j<aux-1;j++){
                 if(j>0) fscanf(data,"%s ;",accumulator);
                 if(j==select){
                     fprintf(data_alt,"%s ;",valor);
@@ -692,13 +726,31 @@ void change_data(tables *index){
         fgetc(data);
         fprintf(data_alt,"\n");
     }
+
     fclose(format);
     fclose(data);
     fclose(data_alt);
     remove(dados);
     rename(dados2,dados);
+
+    print_notification("Valor alterado com sucesso");
     return ;
 }
-int check_type(char valor[],char formato[],char coluna){
-    
+
+int isIntValue(char valor[]){
+    for(int i = 0; i < sizeof(valor); i++) {
+        if((valor[i] < 48 || valor[i] > 57) && !(valor[i] == 0)) {
+            return 0;           
+        }
+    }
+    return 1;
+}
+
+int isFloatValue(char valor[]){
+    for(int i = 0; i < sizeof(valor); i++) {
+        if((valor[i] < 48 || valor[i] > 57) && !(valor[i] == 0)) {
+            if(valor[i] != 46) return 0;           
+        }
+    }
+    return 1;
 }

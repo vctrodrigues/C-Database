@@ -1,6 +1,6 @@
 #include "view.h"
 void print_menu() {
-    printf(ANSI_COLOR_RED"\n");
+    printf(ANSI_COLOR_CYAN"\n");
     printf("           ▒▒▒▒▒▒▒▒\n");
     printf("         ▒▒▒      ▒▒▒\n");
     printf("        ▒▒   ▒▒▒▒  ▒░▒\n");
@@ -27,7 +27,7 @@ void print_menu() {
     printf("         ▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓\n");
     printf("           ▓▓▓▓▓▓▒▒▒▒▒▓▓▓▓\n");
     printf("               ▓▓▓▓▓▓▓▓\n");
-    printf(ANSI_COLOR_YELLOW"\n");
+    printf("\n");
     printf("   ██████████████████████████████████\n");
     printf("   █                                █\n");
     printf("   █  ┌───┐   ┌─┐┌─┐     ┌──┐┌───┐  █\n");
@@ -56,8 +56,9 @@ void print_menu() {
     printf("\n> delete_table");
     printf(ANSI_COLOR_GREEN);
     printf("\n> search_data");
-    printf(ANSI_COLOR_RESET);
+    printf(ANSI_COLOR_CYAN);
     printf("\n> change_data");
+    printf(ANSI_COLOR_RESET);
     printf("\n===============================");
     printf("\nDigite seu comando> ");
 }
@@ -84,4 +85,20 @@ void print_search_options() {
     printf(ANSI_COLOR_RESET);
     printf("\n===============================");
     printf("\nDigite a opção> ");
+}
+
+void print_err(char message[256]) {
+    printf(ANSI_COLOR_RED);
+    printf("err> %s\n", message);
+    printf(ANSI_COLOR_RESET);
+}
+
+void print_notification(char message[256]) {
+    printf(ANSI_COLOR_GREEN);
+    printf("msg> %s\n", message);
+    printf(ANSI_COLOR_RESET);
+}
+
+void print_receive_command(char message[256]) {
+    printf("Digite a opção> ");
 }

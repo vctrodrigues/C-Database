@@ -1,0 +1,3 @@
+int ;matricula
+char ;nome
+int ;idade

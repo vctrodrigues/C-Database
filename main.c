@@ -48,6 +48,7 @@ int main()
             break;
         }
         print_separator();
+        print_receive_command();
     }
     return 0;
 }

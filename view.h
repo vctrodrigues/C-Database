@@ -11,4 +11,7 @@
 void print_menu();
 void print_separator();
 void print_search_options();
+void print_err(char message[256]);
+void print_notification(char message[256]);
+void print_receive_command();
 #endif

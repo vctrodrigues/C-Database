@@ -4,3 +4,7 @@ Nome : itp
 Chave : matricula
 Nome : checkpoint
 Chave : numero
+Nome : aluno
+Chave : matricula
+Nome : test
+Chave : pk
