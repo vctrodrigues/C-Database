@@ -10,4 +10,5 @@
 #include <stdio.h>
 void print_menu();
 void print_separator();
+void print_search_options();
 #endif

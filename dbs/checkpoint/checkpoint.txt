@@ -1,0 +1,3 @@
+int ;numero
+char ;nome
+char[256] ;descricao

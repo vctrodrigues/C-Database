@@ -1,5 +1,4 @@
 #include "BD.h"
-#include "view.h"
 
 int main()
 {   
@@ -14,6 +13,7 @@ int main()
     char listData[256]="list_data";
     char removeData[256]="remove_data";
     char deleteTable[256]="delete_table";
+    char searchData[256]="search_data";
     print_menu();
     while(1){
         scanf("%s",select);
@@ -37,6 +37,8 @@ int main()
         }
         else if (strcmp(select,deleteTable)==0){
             delete_table(index);
+        } else if (strcmp(select,searchData) == 0) {
+            search_data(index);
         }
         else{
             break;

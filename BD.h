@@ -1,5 +1,6 @@
 #ifndef BD_h
 #define BD_h
+#include "view.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -22,4 +23,5 @@ void list_data(tables * index);
 int veri_key(char local_dados[],char local_format[],char chave[]);
 void remove_data(tables * index);
 void delete_table(tables *index);
+void search_data(tables *index);
 #endif

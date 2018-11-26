@@ -12,7 +12,7 @@ void create_table(tables *tabelas){
     printf("nome da tabela\n");
     fscanf(stdin,"%[^\n]",name);
     getchar();
-    if(veri_table ( tabelas,name)){
+    if(veri_table(tabelas,name)){
         printf("Tabela ja existe\n");
         return;
     }
@@ -31,12 +31,12 @@ void create_table(tables *tabelas){
     if (data==NULL){
         printf("falha na abertura");
     }
-    printf("digte o nome da chave primaria\n");
+    printf("Digte o nome da chave primária> ");
     fscanf(stdin,"%[^\n]",key);
     getchar();
     fprintf(table,"int ;%s\n",key);
     do{
-        printf("Digite o tipo da coluna que deseja ou 0 \n");
+        printf("Digite o tipo da coluna que deseja ou 0> ");
         scanf("%s",type);
         strcpy(type ,type_def(type));
         if (strcmp(type,fim)==0) break;
@@ -179,7 +179,7 @@ void list_table(tables* index){
     veri_index(index);
     
     while(strcmp(((index+i)->name),"") != 0){
-        printf("Tabela:%s\n",(index+i)->name);
+        printf("Tabela: %s\n",(index+i)->name);
         i++;
     }
     
@@ -204,10 +204,10 @@ void list_data(tables * index){
     char dat [20]=".data";
     char csv[20]=".txt";
     char local[200]="dbs/";
-    printf("Digite nome da tabela\n");
+    printf("Digite nome da tabela> ");
     scanf("%s",name);
     if (veri_table(index,name)!= 1) {
-        printf("Tabela Não existe\n");
+        printf("Tabela não existe\n");
         return;
     }
     strcat(local,name);
@@ -220,7 +220,7 @@ void list_data(tables * index){
     format = fopen(local,"r+");
     data = fopen(dados,"r+");
     
-    while(!feof(format)){
+    while(!feof(format)) {
         if (colunas==NULL) break;
     
         fscanf(format,"%s ;%s",desp,(coll+aux)->string);
@@ -417,4 +417,191 @@ void delete_table(tables *index){
     remove(formato);
     remove(local);
     return;
+}
+
+void search_data(tables *index) {
+    FILE * format;
+    FILE * data;
+
+    int count = 0;
+    
+    string columns[10];
+    string *columnName = &columns[0];
+    string typeColumns[10];
+    string *columnType = &typeColumns[0];
+    string base[20][20];
+    string *datas = &base[0][0];
+    
+    char name[256];
+    char dados[40];
+    char dat[20]=".data";
+    char csv[20]=".txt";
+    char local[200]="dbs/";
+    printf("Digite o nome da tabela> ");
+    scanf("%s",name);
+
+    char selectedColumn[100];
+
+    printf("Digite o nome da coluna> ");
+    scanf("%s", selectedColumn);
+
+    if(veri_table(index,name)!= 1) {
+        printf("Tabela não existe\n");
+        return;
+    }
+
+    int option = 0;
+
+    print_search_options();
+    scanf("%d", &option);
+
+    strcat(local,name);
+    strcat(local,"/");
+    strcat(local,name);
+    strcpy(dados,local);
+    strcat(local,csv);
+    strcat(dados,dat);
+    
+    format = fopen(local, "r+");
+    data = fopen(dados, "r+");
+    
+    while(!feof(format)){    
+        fscanf(format,"%s ;%s",(columnType+count)->string,(columnName+count)->string);
+        fgetc(format);
+        count++;    
+    }
+
+    int count2 = 0;
+    int columnIndex = 0;
+
+    char selectedType[256];
+
+    for(int i = 0; i < count-1; i++){
+        if(strcmp(columns[i].string, selectedColumn) == 0) {
+            strcpy(selectedType, typeColumns[i].string);
+            break;
+        }
+        columnIndex++;
+    }   
+
+    int intSearchTerm;
+    char charSearchTerm[256];
+    float floatSearchTerm;
+    printf("Digite o termo de busca> ");
+    if(strcmp(selectedType, "int") == 0) {
+        scanf("%d", &intSearchTerm);
+    } else if(strcmp(selectedType, "char[256]") == 0 || strcmp(selectedType, "char") == 0) {
+        scanf("%s", &charSearchTerm);
+    } else if(strcmp(selectedType, "float") == 0) {
+        scanf("%f", &floatSearchTerm);
+    }
+
+    while(!feof(data)) {
+        int columnCount = 0;
+        while(1) {
+            if(columnCount == columnIndex) {
+                break;
+            }
+            string trash;
+            fscanf(data, "%s ;", trash.string);
+            columnCount++;
+        }
+
+        if(strcmp(selectedType, "int") == 0) {
+            int value = 0;
+            fscanf(data, "%d ;", &value);
+
+            switch(option) {
+                case 1: 
+                if(value > intSearchTerm) {
+                    printf("%d\n", value);
+                }
+                break;
+                case 2:
+                if(value >= intSearchTerm) {
+                    printf("%d\n", value);
+                }
+                break;
+                case 3:
+                if(value == intSearchTerm) {
+                    printf("%d\n", value);
+                }
+                break;
+                case 4:
+                if(value < intSearchTerm) {
+                    printf("%d\n", value);
+                }
+                break;
+                case 5:
+                if(value <= intSearchTerm) {
+                    printf("%d\n", value);
+                }
+                break;
+                default:
+                break;
+            }
+
+        } else if(strcmp(selectedType, "char[256]") == 0 || strcmp(selectedType, "char") == 0) {
+            char value[256];
+            fscanf(data, "%s ;", value);
+
+            if(strstr(value, charSearchTerm)) {
+                printf("%s\n", value);
+            }
+
+        } else if(strcmp(selectedType, "float") == 0) {
+            float value;
+            fscanf(data, "%f ;", value);
+
+            switch(option) {
+                case 1: 
+                if(value > floatSearchTerm) {
+                    printf("%f\n", value);
+                }
+                break;
+                case 2:
+                if(value >= floatSearchTerm) {
+                    printf("%f\n", value);
+                }
+                break;
+                case 3:
+                if(value == floatSearchTerm) {
+                    printf("%f\n", value);
+                }
+                break;
+                case 4:
+                if(value < floatSearchTerm) {
+                    printf("%f\n", value);
+                }
+                break;
+                case 5:
+                if(value <= floatSearchTerm) {
+                    printf("%f\n", value);
+                }
+                break;
+                default:
+                break;
+            }
+        }
+
+        if(columnCount == count-2) {
+            string trash;
+            fscanf(data, "\n", trash.string);
+        }
+
+        while(columnCount < count-2) {
+            if(columnCount == count-3) {
+                string trash;
+                fscanf(data, "%s ;\n", trash.string);
+            } else {
+                string trash;
+                fscanf(data, "%s ;", trash.string);
+            }
+            columnCount++;
+        }
+        
+    }
+
+    
+
 }

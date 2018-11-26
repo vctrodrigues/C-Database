@@ -2,3 +2,5 @@ Nome : equipe
 Chave : id
 Nome : itp
 Chave : matricula
+Nome : checkpoint
+Chave : numero
