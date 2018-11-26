@@ -605,3 +605,100 @@ void search_data(tables *index) {
     
 
 }
+void change_data(tables *index){
+    FILE *format;
+    FILE *data;
+    FILE *data_alt;
+    int aux=0;
+    int aux2 =0 ;
+    int select =0 ;
+    char chave[200];
+    char valor[200];
+    char accumulator[256];
+    char accumulator2[256];
+    char name[256];
+    char local[200]="dbs/";
+    char dados[200];
+    char formato[200];
+    char dados2[200];
+    printf("Digite nome da tabela\n");
+    scanf("%s",name);
+    if (veri_table(index,name)!= 1) {
+        printf("Tabela Não existe\n");
+        return;
+    }
+    strcat(local,name);
+    strcpy(dados,local);
+    strcat(dados,"/");
+    strcat(dados,name);
+    strcpy(formato,dados);
+    strcpy(dados2,formato);
+    strcat(dados,".data");
+    strcat(formato,".txt");
+    strcat(dados2,".alterado");
+    format = fopen(formato,"r+");
+    data = fopen(dados,"r+");
+    data_alt = fopen(dados2,"w");
+    
+    while (!feof(format))
+    {   
+        fgets(accumulator,256,format);
+        aux++;
+    }
+    fseek(format,0,SEEK_SET);
+    printf("Digite o numero da coluna que deseja alterar\n");
+    for (int i =0;i<aux-1;i++){
+        fscanf(format,"%s ;%s",accumulator,accumulator2);
+        printf("%d-%s||",i,accumulator2);
+    }
+    do{
+    printf("\n Select>");
+    scanf("%d",&select);
+    if(select>aux-2) printf("coluna não existe");
+    }while(select>aux-2);
+    printf("Digite o novo valor\n");
+    scanf("%s",valor);
+    if ((select==0)&&(veri_key(dados,formato,valor))){
+        printf("Chave ja existe");
+        remove(dados2);
+        return;
+    }
+    printf("digite o valor da chave primaria da linha\n");
+    scanf("%s",chave);
+    while (!feof(data))
+    {   
+        fgets(accumulator,256,data);
+        aux2++;
+    }
+    fseek(data,0,SEEK_SET);
+    for (int i =0;i<aux2-1;i++){
+        for (int j=0;j<aux-1;j++){
+            fscanf(data,"%s ;",accumulator);
+            if ((j==0)&&(strcmp(accumulator,chave)==0)){
+             for( j=0;j<aux-1;j++){
+                if(j>0) fscanf(data,"%s ;",accumulator);
+                if(j==select){
+                    fprintf(data_alt,"%s ;",valor);
+                }
+                else{
+                    fprintf(data_alt,"%s ;",accumulator);
+                }
+             }   
+            }
+            else{
+                fprintf(data_alt,"%s ;",accumulator);
+            }
+        }
+        fgetc(data);
+        fprintf(data_alt,"\n");
+    }
+    fclose(format);
+    fclose(data);
+    fclose(data_alt);
+    remove(dados);
+    rename(dados2,dados);
+    return ;
+}
+int check_type(char valor[],char formato[],char coluna){
+    
+}

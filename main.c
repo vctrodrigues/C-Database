@@ -14,6 +14,7 @@ int main()
     char removeData[256]="remove_data";
     char deleteTable[256]="delete_table";
     char searchData[256]="search_data";
+    char alteraDado[256]="change_data";
     print_menu();
     while(1){
         scanf("%s",select);
@@ -39,6 +40,9 @@ int main()
             delete_table(index);
         } else if (strcmp(select,searchData) == 0) {
             search_data(index);
+        }
+        else if (strcmp(select,alteraDado)==0){
+            change_data(index);
         }
         else{
             break;

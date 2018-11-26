@@ -24,4 +24,5 @@ int veri_key(char local_dados[],char local_format[],char chave[]);
 void remove_data(tables * index);
 void delete_table(tables *index);
 void search_data(tables *index);
+void change_data(tables *index);
 #endif

@@ -57,6 +57,7 @@ void print_menu() {
     printf(ANSI_COLOR_GREEN);
     printf("\n> search_data");
     printf(ANSI_COLOR_RESET);
+    printf("\n> change_data");
     printf("\n===============================");
     printf("\nDigite seu comando> ");
 }
