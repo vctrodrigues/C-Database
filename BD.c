@@ -13,7 +13,7 @@ void create_table(tables *tabelas){
     fscanf(stdin,"%[^\n]",name);
     getchar();
     if(veri_table(tabelas,name)){
-        print_err("Tabela já existe\n");
+        print_err("Tabela já existe");
         return;
     }
     mkdir(strcat(local,name), 0777);
@@ -67,7 +67,7 @@ char * type_def(char*type){
 }
 
 void veri_index(tables *tabelas){
-    tables lixo ;
+    tables lixo;
     tables * indi = &lixo;
     
     FILE * index = fopen("index.txt","r+");
@@ -75,13 +75,11 @@ void veri_index(tables *tabelas){
     int i = 0 ;
     
     do {
-        if (indi->name==NULL) break;
         fscanf(index,"Nome : %s\n",indi->name);
         fscanf(index,"Chave : %s\n",indi->key);
         strcpy((tabelas+i)->name,indi->name);
         strcpy((tabelas+i)->key,indi->key);
         //printf("primeira->%s  segunda->%s\n",(tabelas+i)->name,(tabelas+i)->key);
-        if (indi->key==NULL) break;
         i++;
     } while(!feof(index));    
 
@@ -141,7 +139,7 @@ void insert_data(tables *index) {
 
         int isPK = 1;
         do {
-            char value[256];
+            char value[256] = ""; 
 
             char type[30];
             char column[30];
@@ -155,15 +153,17 @@ void insert_data(tables *index) {
             if(strcmp(type, "int") == 0) {
                 int isInt = isIntValue(value);
                 if(!isInt) {
-                    printf(ANSI_COLOR_RED "err> Valor `%s` não corresponde ao tipo (%s)\n", value, type);
-                    printf(ANSI_COLOR_RESET);
+                    char err[200] = "Tipo de valor esperado: ";
+                    strcat(err, type);
+                    print_err(err);
                     return;
                 }
             } else if(strcmp(type, "float") == 0) {
                 int isFloat = isFloatValue(value);
                 if(!isFloat) {
-                    printf(ANSI_COLOR_RED "err> Valor `%s` não corresponde ao tipo (%s)\n", value, type);
-                    printf(ANSI_COLOR_RESET);
+                    char err[200] = "Tipo de valor esperado: ";
+                    strcat(err, type);
+                    print_err(err);
                     return;
                 }
             }
@@ -237,12 +237,10 @@ void list_data(tables * index){
     data = fopen(dados,"r+");
     
     while(!feof(format)) {
-        if (colunas==NULL) break;
     
         fscanf(format,"%s ;%s",desp,(coll+aux)->string);
         fgetc(format);
     
-        if (colunas==NULL) break;
         aux++;    
     }
     
@@ -743,7 +741,7 @@ void change_data(tables *index){
     return ;
 }
 
-int isIntValue(char valor[]){
+int isIntValue(char valor[]) {
     for(int i = 0; i < sizeof(valor); i++) {
         if((valor[i] < 48 || valor[i] > 57) && !(valor[i] == 0)) {
             return 0;           
@@ -752,10 +750,10 @@ int isIntValue(char valor[]){
     return 1;
 }
 
-int isFloatValue(char valor[]){
+int isFloatValue(char valor[]) {
     for(int i = 0; i < sizeof(valor); i++) {
-        if((valor[i] < 48 || valor[i] > 57) && !(valor[i] == 0)) {
-            if(valor[i] != 46) return 0;           
+        if((valor[i] < 48 || valor[i] > 57) && !(valor[i] == 0 || valor[i] == 46)) {
+            return 0;
         }
     }
     return 1;
@@ -763,7 +761,7 @@ int isFloatValue(char valor[]){
 int validValue(char valor[],int select,char local[]){
     char accumulator[200];
     char accumulator2[200];
-    char erro [200]="expected type value ";
+    char erro [200]="Tipo de valor esperado: ";
     int aux=0;
     FILE *tabelas;
     tabelas = fopen(local,"r+");
@@ -773,10 +771,11 @@ int validValue(char valor[],int select,char local[]){
         fgetc(tabelas);
         aux++;
     }while (aux<select+1);
-    printf("%s %s\n",accumulator,accumulator2);
-    if((strcmp(accumulator,"int")==0) &&(isIntValue(valor)))return 0;
-    else if((strcmp(accumulator,"float")==0) &&(isFloatValue(valor)))return 0;
-    else if((strcmp(accumulator,"char")==0) &&(isIntValue(valor)==0)&&(isFloatValue(valor)==0))return 0;
+
+    if((strcmp(accumulator,"int")==0) && (isIntValue(valor))) return 0;
+    else if((strcmp(accumulator,"float")==0) &&(isFloatValue(valor))) return 0;
+    else if(strcmp(accumulator,"char")==0) return 0;
+
     strcat(erro,accumulator);
     print_err(erro);
     return 1;
