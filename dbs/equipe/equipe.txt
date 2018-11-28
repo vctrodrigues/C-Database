@@ -1,3 +1,3 @@
 int ;id
-char[256] ;capitao
+char ;capitao
 int ;titulos

@@ -1,2 +1,2 @@
 int ;matricula
-char[256] ;nomes
+char ;nomes

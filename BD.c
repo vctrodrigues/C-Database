@@ -36,12 +36,12 @@ void create_table(tables *tabelas){
     getchar();
     fprintf(table,"int ;%s\n",key);
     do{
+        printf("Digite o nome da coluna> ");
+        scanf("%s",columns);
         printf("Digite o tipo da coluna que deseja ou 0> ");
         scanf("%s",type);
         strcpy(type ,type_def(type));
         if (strcmp(type,fim)==0) break;
-        printf("Digite o nome da coluna> ");
-        scanf("%s",columns);
         fprintf(table,"%s ;%s\n",type,columns);
     }while (strcmp(type,fim)!= 0);
     FILE *index=fopen("index.txt","a+");
@@ -57,7 +57,7 @@ char * type_def(char*type){
     char chr[30]= "char";
     char flt[30] = "float";
     if (strcmp(type,inteiro)== 0) return "int";
-    else if (strcmp(type,str)== 0) return "char[256]";
+    else if (strcmp(type,str)== 0) return "char";
     else if (strcmp(type,chr)== 0) return "char";
     else if (strcmp(type,flt)== 0) return "float";
     else{
@@ -680,6 +680,7 @@ void change_data(tables *index){
         fscanf(format,"%s ;%s",accumulator,accumulator2);
         printf("%d - %s\t| ",i,accumulator2);
     }
+    printf("\n");
     print_separator();
     
     do {
@@ -695,6 +696,11 @@ void change_data(tables *index){
         remove(dados2);
         return;
     }
+    else if (validValue(valor,select,formato)){
+        remove(dados2);
+        return;
+    }
+
     printf("Digite o valor da chave primária da linha> ");
     scanf("%s",chave);
 
@@ -752,5 +758,26 @@ int isFloatValue(char valor[]){
             if(valor[i] != 46) return 0;           
         }
     }
+    return 1;
+}
+int validValue(char valor[],int select,char local[]){
+    char accumulator[200];
+    char accumulator2[200];
+    char erro [200]="expected type value ";
+    int aux=0;
+    FILE *tabelas;
+    tabelas = fopen(local,"r+");
+    do
+    {   
+        fscanf(tabelas,"%s ;%s",accumulator,accumulator2);
+        fgetc(tabelas);
+        aux++;
+    }while (aux<select+1);
+    printf("%s %s\n",accumulator,accumulator2);
+    if((strcmp(accumulator,"int")==0) &&(isIntValue(valor)))return 0;
+    else if((strcmp(accumulator,"float")==0) &&(isFloatValue(valor)))return 0;
+    else if((strcmp(accumulator,"char")==0) &&(isIntValue(valor)==0)&&(isFloatValue(valor)==0))return 0;
+    strcat(erro,accumulator);
+    print_err(erro);
     return 1;
 }

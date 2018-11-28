@@ -100,5 +100,5 @@ void print_notification(char message[256]) {
 }
 
 void print_receive_command(char message[256]) {
-    printf("Digite a opção> ");
+    printf("Digite seu comando> ");
 }
