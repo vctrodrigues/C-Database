@@ -1,89 +1,51 @@
 #include "view.h"
 void print_menu() {
-    printf(ANSI_COLOR_CYAN"\n");
-    printf("           ▒▒▒▒▒▒▒▒\n");
-    printf("         ▒▒▒      ▒▒▒\n");
-    printf("        ▒▒   ▒▒▒▒  ▒░▒\n");
-    printf("       ▒▒   ▒▒  ▒▒  ▒░▒\n");
-    printf("      ▒▒░▒      ▒▒  ▒░▒\n");
-    printf("       ▒▒░▒    ▒▒  ▒░▒\n");
-    printf("         ▒▒▒▒▒▒▒   ▒▒\n");
-    printf("                 ▒▒▒\n");
-    printf("     ▒▒▒▒        ▒▒\n");
-    printf("   ▒▒▒░░▒▒▒     ▒▒  ▓▓▓▓▓▓▓▓\n");
-    printf("  ▒▒     ▒▒▒    ▒▒▓▓▓▓▓░░░░░▓▓  ▓▓▓▓\n");
-    printf(" ▒   ▒▒    ▒▒ ▓▓▒░░░░░░░░░█▓▒▓▓▓▓░░▓▓▓\n");
-    printf("▒▒  ▒ ▒▒   ▓▒▒░░▒░░░░░████▓▓▒▒▓░░░░░░▓▓\n");
-    printf("░▒▒   ▒  ▓▓▓░▒░░░░░░█████▓▓▒▒▒▒▓▓▓▓▓░░▓▓\n");
-    printf("  ▒▒▒▒  ▓▓░░░░░░███████▓▓▓▒▒▒▒▒▓   ▓▓░▓▓\n");
-    printf("      ▓▓░░░░░░███████▓▓▓▒▒▒▒▒▒▒▓   ▓░░▓▓\n");
-    printf("     ▓▓░░░░░███████▓▓▓▒▒▒▒▒▒▒▒▒▓▓▓▓░░▓▓\n");
-    printf("    ▓▓░░░░██████▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▓░░░░▓▓\n");
-    printf("    ▓▓▓░████▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓\n");
-    printf("     ▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓\n");
-    printf("     ▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓\n");
-    printf("      ▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓\n");
-    printf("       ▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓\n");
-    printf("         ▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓\n");
-    printf("           ▓▓▓▓▓▓▒▒▒▒▒▓▓▓▓\n");
-    printf("               ▓▓▓▓▓▓▓▓\n");
-    printf("\n");
-    printf("   ██████████████████████████████████\n");
-    printf("   █                                █\n");
-    printf("   █  ┌───┐   ┌─┐┌─┐     ┌──┐┌───┐  █\n");
-    printf("   █  │┌─┐│   │┌┘│┌┘     │┌┐│└┐┌┐│  █\n");
-    printf("   █  ││ └┼──┬┘└┬┘└┬──┬──┤└┘└┐││││  █\n");
-    printf("   █  ││ ┌┤┌┐├┐┌┴┐┌┤ ─┤ ─┤┌─┐│││││  █\n");
-    printf("   █  │└─┘│└┘│││ │││ ─┤ ─┤└─┘├┘└┘│  █\n");
-    printf("   █  └───┴──┘└┘ └┘└──┴──┴───┴───┘  █\n");
-    printf("   █                                █\n");
-    printf("   ██████████████████████████████████\n");
-    printf(ANSI_COLOR_RESET"\n");
-    printf("\n-> Bem-vindo ao SGBD:");
-    printf("\n===============================");
-    printf("\n---------- COMANDOS: ----------");
-    printf(ANSI_COLOR_GREEN);
+    printf(ANSI_COLOR_YELLOW"\n");
+    printf("┌───┐   ┌─┐┌─┐     ┌──┐┌───┐\n");
+    printf("│┌─┐│   │┌┘│┌┘     │┌┐│└┐┌┐│\n");
+    printf("││ └┼──┬┘└┬┘└┬──┬──┤└┘└┐││││\n");
+    printf("││ ┌┤┌┐├┐┌┴┐┌┤ ─┤ ─┤┌─┐│││││\n");
+    printf("│└─┘│└┘│││ │││ ─┤ ─┤└─┘├┘└┘│\n");
+    printf("└───┴──┘└┘ └┘└──┴──┴───┴───┘\n");
+    printf("CoffeeBD Co.\nv1.0.0-stable\n");
+    printf(ANSI_COLOR_RESET "\n");
+    printf("\nCOMANDOS:");
+    printf(ANSI_COLOR_CYAN);
     printf("\n> create_table");
-    printf(ANSI_COLOR_CYAN);
     printf("\n> list_table");
-    printf(ANSI_COLOR_YELLOW);
     printf("\n> insert_data");
-    printf(ANSI_COLOR_MAGENTA);
     printf("\n> list_data");
-    printf(ANSI_COLOR_RED);
     printf("\n> remove_data");
-    printf(ANSI_COLOR_BLUE);
     printf("\n> delete_table");
-    printf(ANSI_COLOR_GREEN);
     printf("\n> search_data");
-    printf(ANSI_COLOR_CYAN);
     printf("\n> change_data");
+    printf("\n> help");
+    printf("\n> clear");
+    printf("\n> exit");
     printf(ANSI_COLOR_RESET);
-    printf("\n===============================");
-    printf("\nDigite seu comando> ");
+    printf("\n");
+    printf("\nCoffeeBD> ");
+}
+
+void print_menu_header() {
+    printf(ANSI_COLOR_YELLOW"\n");
+    printf("CoffeeBD Co.\nv1.0.0-stable\n");
 }
 
 void print_separator() {
-    printf("===============================\n");
+    printf("\n");
 }
 
 void print_search_options() {
-    printf("\n===============================");
-    printf("\n---------- COMANDOS: ----------");
-    printf(ANSI_COLOR_GREEN);
-    printf("\n1> valores maiores");
+    printf("\nOPÇÕES");
     printf(ANSI_COLOR_CYAN);
+    printf("\n1> valores maiores");
     printf("\n2> valores maiores ou iguais");
-    printf(ANSI_COLOR_YELLOW);
     printf("\n3> valores iguais");
-    printf(ANSI_COLOR_MAGENTA);
     printf("\n4> valores menores");
-    printf(ANSI_COLOR_RED);
     printf("\n5> valores menores ou iguais");
-    printf(ANSI_COLOR_BLUE);
     printf("\n6> valores próximos (string)");
     printf(ANSI_COLOR_RESET);
-    printf("\n===============================");
     printf("\nDigite a opção> ");
 }
 
@@ -95,10 +57,27 @@ void print_err(char message[256]) {
 
 void print_notification(char message[256]) {
     printf(ANSI_COLOR_GREEN);
-    printf("msg> %s\n", message);
+    printf("info> %s\n", message);
     printf(ANSI_COLOR_RESET);
 }
 
 void print_receive_command(char message[256]) {
-    printf("Digite seu comando> ");
+    printf(ANSI_COLOR_RESET "CoffeeBD> ");
+}
+
+void print_commands() {
+    printf("COMANDOS:");
+    printf(ANSI_COLOR_CYAN);
+    printf("\n> create_table");
+    printf("\n> list_table");
+    printf("\n> insert_data");
+    printf("\n> list_data");
+    printf("\n> remove_data");
+    printf("\n> delete_table");
+    printf("\n> search_data");
+    printf("\n> change_data");
+    printf("\n> help");
+    printf("\n> clear");
+    printf("\n> exit\n");
+    printf(ANSI_COLOR_RESET);
 }

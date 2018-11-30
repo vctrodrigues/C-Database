@@ -195,8 +195,9 @@ void list_table(tables* index){
     int i = 0;
     veri_index(index);
     
+    printf(ANSI_COLOR_CYAN "TABELAS:\n" ANSI_COLOR_RESET);
     while(strcmp(((index+i)->name),"") != 0){
-        printf("Tabela: %s\n",(index+i)->name);
+        printf("> %s\n",(index+i)->name);
         i++;
     }
     
@@ -521,8 +522,30 @@ void search_data(tables *index) {
     } else if(strcmp(selectedType, "float") == 0) {
         scanf("%f", &floatSearchTerm);
     }
+    
+    char accumulator[256];
+    char accumulator2[256];
+    int aux = 0;
+
+    fseek(format,0,SEEK_SET);
+    while (!feof(format))
+    {   
+        fgets(accumulator,256,format);
+        aux++;
+    }
+    fseek(format,0,SEEK_SET);
+
+    print_separator();
+    for (int i = 0; i < aux-1; i++){
+        fscanf(format,"%s ;%s",accumulator,accumulator2);
+        printf(ANSI_COLOR_CYAN"%20s | ",accumulator2);
+    }
+    printf(ANSI_COLOR_RESET);
+    print_separator();
 
     while(!feof(data)) {
+        char base[20][256];
+
         int columnCount = 0;
         while(1) {
             if(columnCount == columnIndex) {
@@ -530,8 +553,11 @@ void search_data(tables *index) {
             }
             string trash;
             fscanf(data, "%s ;", trash.string);
+            strcpy(base[columnCount], trash.string);
             columnCount++;
         }
+
+        int hasFind = 0;
 
         if(strcmp(selectedType, "int") == 0) {
             int value = 0;
@@ -540,27 +566,57 @@ void search_data(tables *index) {
             switch(option) {
                 case 1: 
                 if(value > intSearchTerm) {
-                    printf("%d\n", value);
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%d", value);
+                    hasFind = 1;
                 }
                 break;
                 case 2:
                 if(value >= intSearchTerm) {
-                    printf("%d\n", value);
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%d", value);
+                    hasFind = 1;
                 }
                 break;
                 case 3:
                 if(value == intSearchTerm) {
-                    printf("%d\n", value);
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%d", value);
+                    hasFind = 1;
                 }
                 break;
                 case 4:
                 if(value < intSearchTerm) {
-                    printf("%d\n", value);
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%d", value);
+                    hasFind = 1;
                 }
                 break;
                 case 5:
                 if(value <= intSearchTerm) {
-                    printf("%d\n", value);
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%d", value);
+                    hasFind = 1;
                 }
                 break;
                 default:
@@ -571,8 +627,75 @@ void search_data(tables *index) {
             char value[256];
             fscanf(data, "%s ;", value);
 
-            if(strstr(value, charSearchTerm)) {
-                printf("%s\n", value);
+            switch(option) {
+                case 1: 
+                if(strcmp(value, charSearchTerm) > 0) {
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%20s", value);
+                    hasFind = 1;
+                }
+                break;
+                case 2:
+                if(strcmp(value, charSearchTerm) >= 0) {
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%20s", value);
+                    hasFind = 1;
+                }
+                break;
+                case 3:
+                if(strcmp(value, charSearchTerm) == 0) {
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%20s", value);
+                    hasFind = 1;
+                }
+                break;
+                case 4:
+                if(strcmp(value, charSearchTerm) < 0) {
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%20s", value);
+                    hasFind = 1;
+                }
+                break;
+                case 5:
+                if(strcmp(value, charSearchTerm) <= 0) {
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%20s", value);
+                    hasFind = 1;
+                }
+                break;
+                case 6:
+                if(strstr(value, charSearchTerm)) {
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%20s", value);
+                    hasFind = 1;
+                }
+                break;
+                default:
+                break;
             }
 
         } else if(strcmp(selectedType, "float") == 0) {
@@ -582,27 +705,57 @@ void search_data(tables *index) {
             switch(option) {
                 case 1: 
                 if(value > floatSearchTerm) {
-                    printf("%f\n", value);
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%f", value);
+                    hasFind = 1;
                 }
                 break;
                 case 2:
                 if(value >= floatSearchTerm) {
-                    printf("%f\n", value);
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%f", value);
+                    hasFind = 1;
                 }
                 break;
                 case 3:
                 if(value == floatSearchTerm) {
-                    printf("%f\n", value);
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%f", value);
+                    hasFind = 1;
                 }
                 break;
                 case 4:
                 if(value < floatSearchTerm) {
-                    printf("%f\n", value);
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%f", value);
+                    hasFind = 1;
                 }
                 break;
                 case 5:
                 if(value <= floatSearchTerm) {
-                    printf("%f\n", value);
+                    if(columnCount > 0) {
+                        for(int i = 0; i < columnCount; i++) {
+                            printf("%20s | ", base[i]);
+                        }
+                    }
+                    printf("%f", value);
+                    hasFind = 1;
                 }
                 break;
                 default:
@@ -613,23 +766,22 @@ void search_data(tables *index) {
         if(columnCount == count-2) {
             string trash;
             fscanf(data, "\n", trash.string);
+            print_separator();
         }
 
         while(columnCount < count-2) {
             if(columnCount == count-3) {
                 string trash;
                 fscanf(data, "%s ;\n", trash.string);
+                if(hasFind == 1) printf("%23s |", trash.string);
             } else {
                 string trash;
                 fscanf(data, "%s ;", trash.string);
+                if(hasFind == 1) printf("%23s |", trash.string);
             }
             columnCount++;
-        }
-        
+        }   
     }
-
-    
-
 }
 
 void change_data(tables *index){

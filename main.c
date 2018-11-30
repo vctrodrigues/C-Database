@@ -18,6 +18,7 @@ int main()
     char alteraDado[256]="change_data";
     char saida[50]="exit";
     char clear[50]="clear";
+    char help[50]="help";
     print_menu();
     while(1){
         scanf("%s",select);
@@ -46,17 +47,19 @@ int main()
         }
         else if (strcmp(select,alteraDado)==0){
             change_data(index);
+        } else if (strcmp(select,help)==0){
+            print_commands(index);
         }
         else if (strcmp(select,saida)==0){
             break;
         }
         else if (strcmp(select,clear)==0){
             system(clear);
+            print_menu_header();
         }
         else{
-            print_err("comando não reconhecido");
+            print_err("Comando não reconhecido");
         }
-        printf("\n");
         print_separator();
         print_receive_command();
     }
