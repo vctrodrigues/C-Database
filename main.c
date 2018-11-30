@@ -2,6 +2,7 @@
 
 int main()
 {   
+    system("clear");
     mkdir("dbs", 0777);
     tables tabelas[200];
     tables *index =& tabelas[0];  
