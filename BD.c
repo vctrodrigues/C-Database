@@ -38,6 +38,7 @@ void create_table(tables *tabelas){
     do{
         printf("Digite o nome da coluna> ");
         scanf("%s",columns);
+        if (strcmp(columns,fim)==0) break;
         printf("Digite o tipo da coluna que deseja ou 0> ");
         scanf("%s",type);
         strcpy(type ,type_def(type));
